@@ -16,6 +16,12 @@ export const plugin: PluginFunction = (
   schema: GraphQLSchema,
   documents: Types.DocumentFile[]
 ) => {
+  if (documents.length < 1) {
+    throw new Error(
+      "The subsetting plugin only works when at least one operation document has been specified."
+    );
+  }
+
   const typeInfo = new TypeInfo(schema);
   const usedObjectFields = new Map<string, Set<string>>(); // objects and interfaces
   const otherUsedTypes = new Set<string>();
