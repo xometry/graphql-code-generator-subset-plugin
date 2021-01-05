@@ -10,7 +10,7 @@ and a set of operations. This subset schema can then be checked into the consume
 
 ## Installation
 
-`yarn add --dev graphql-code-generator-subset-plugin`
+`yarn add --dev @xometry/graphql-code-generator-subset-plugin`
 
 ## Usage
 
@@ -22,7 +22,7 @@ This is a simple output plugin for graphql-code-generator, and so you configure 
 ```yaml
 generates:
   my-consumed-schema.graphql
-    - graphql-code-generator-subset-plugin
+    - "@xometry/graphql-code-generator-subset-plugin"
 ```
 
 As a simple example, see the [examples/github](examples/github) directory, where we generate a small subset of the github API schema.
