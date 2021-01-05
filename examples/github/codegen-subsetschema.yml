@@ -1,0 +1,6 @@
+schema: "https://docs.github.com/public/schema.docs.graphql"
+documents:
+  - "examples/github/github-query.graphql"
+generates:
+  examples/github/github-schema-subset.graphql:
+    - "dist/src/plugin.js"
