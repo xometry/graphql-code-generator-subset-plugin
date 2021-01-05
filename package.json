@@ -5,8 +5,7 @@
   "main": "dist/src/plugin.js",
   "repository": "https://github.com/xometry/graphql-code-generator-subset-plugin",
   "author": "Benjamin Smedberg <bsmedberg@xometry.com>",
-  "license": "None",
-  "private": true,
+  "license": "MIT",
   "dependencies": {
     "@graphql-codegen/cli": "^1.19.4",
     "@graphql-codegen/plugin-helpers": "^1.18.2",
