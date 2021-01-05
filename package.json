@@ -1,5 +1,5 @@
 {
-  "name": "graphql-code-generator-plugin-schemasubset",
+  "name": "graphql-code-generator-subset-plugin",
   "version": "0.1.0",
   "description": "A plugin for graphql-code-generator that will take a full schema and a set of operations, and produce a subset schema.",
   "main": "dist/src/plugin.js",
