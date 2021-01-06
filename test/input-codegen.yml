@@ -1,0 +1,6 @@
+schema: basic-schema.graphql
+documents:
+  - input-document.graphql
+generates:
+  generated/input-subset-schema.graphql:
+    - "../dist/src/plugin.js"

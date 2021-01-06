@@ -1,0 +1,14 @@
+query GetSelfID {
+  me {
+    id
+  }
+}
+
+mutation RegisterUser($email: String!, $lastName: String!) {
+  createUser(input: {
+    email: $email,
+    lastName: $lastName,
+  }) {
+    id
+  }
+}

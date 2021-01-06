@@ -126,5 +126,13 @@ export const plugin: PluginFunction = (
       }
     }
   }
+
+  // Now do some sanity checks! One particularly-frustrating one: you *must* reference at least one query field.
+  if (typeMap.Query === undefined) {
+    throw new Error(
+      "You must reference at least one query field to have a valid schema."
+    );
+  }
+
   return printSchema(schema);
 };
