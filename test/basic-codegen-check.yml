@@ -1,0 +1,7 @@
+schema: generated/basic-subset-schema.graphql
+documents:
+  - basic-document.graphql
+generates:
+  generated/basic-subset-rewritten.json:
+    plugins:
+      - introspection

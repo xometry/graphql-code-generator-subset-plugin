@@ -1,0 +1,27 @@
+interface HasName {
+  firstName: String
+  lastName: String
+}
+
+type User implements HasName {
+  id: ID!
+  firstName: String
+  lastName: String
+  email: String
+}
+
+input CreateUserInput {
+  firstName: String
+  lastName: String
+  email: String!
+}
+
+type Query {
+  userById(id: ID!): User
+  me: User
+  namedThing(id: ID!): HasName
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+}
