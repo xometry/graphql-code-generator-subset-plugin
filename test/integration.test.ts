@@ -134,4 +134,13 @@ test("union", async () => {
   const { schema } = await runBaseTests("union");
 
   expect(schema).toHaveType("Droid");
-})
+  expect(schema).not.toHaveType("Starship");
+  expect(schema).toHaveField("Droid", "type");
+  expect(schema).not.toHaveField("Droid", "identifier");
+});
+
+test("union-unused", async () => {
+  await expect(runBaseTests("union-unused")).rejects.toThrow(
+    /documents reference union "Character"/
+  );
+});

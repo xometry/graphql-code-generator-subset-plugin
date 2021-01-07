@@ -94,12 +94,19 @@ export const plugin: PluginFunction = (
   for (const type of Object.values(typeMap)) {
     if (isUnionType(type)) {
       const members = type.getTypes();
+
       // mutate in-place with a reverse loop
       for (let i = members.length - 1; i >= 0; i -= 1) {
         const member = members[i];
         if (typeMap[member.name] === undefined) {
           members.splice(i, 1);
         }
+      }
+
+      if (members.length === 0) {
+        throw new Error(
+          `documents reference union "${type.name}" but none of its member types, which breaks code generation.`
+        );
       }
     }
   }
