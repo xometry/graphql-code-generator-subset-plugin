@@ -129,3 +129,9 @@ test("input", async () => {
   expect(schema).toHaveField("CreateUserInput", "firstName");
   expect(schema).toHaveField("CreateUserInput", "email");
 });
+
+test("union", async () => {
+  const { schema } = await runBaseTests("union");
+
+  expect(schema).toHaveType("Droid");
+})

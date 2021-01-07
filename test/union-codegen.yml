@@ -1,0 +1,6 @@
+schema: union-schema.graphql
+documents:
+  - union-document.graphql
+generates:
+  generated/union-subset-schema.graphql:
+    - "../dist/src/plugin.js"

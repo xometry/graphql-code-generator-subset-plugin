@@ -1,0 +1,20 @@
+type Droid {
+  type: String
+  identifier: String
+}
+
+type BountyHunter {
+  name: String
+  guildMember: Boolean
+}
+
+type Starship {
+  model: String
+  dockingPorts: [String]
+}
+
+union Character = Droid | BountyHunter | Starship
+
+type Query {
+  allCharacters: [Character!]
+}

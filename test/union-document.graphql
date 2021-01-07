@@ -1,0 +1,11 @@
+query {
+  allCharacters {
+    __typename
+    ... on Droid {
+      type
+    }
+    ... on BountyHunter {
+      name
+    }
+  }
+}

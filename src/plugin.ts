@@ -9,6 +9,7 @@ import {
   printSchema,
   isObjectType,
   isInterfaceType,
+  isUnionType,
 } from "graphql";
 import { Types, PluginFunction } from "@graphql-codegen/plugin-helpers";
 
@@ -66,11 +67,12 @@ export const plugin: PluginFunction = (
     visit(doc.document as DocumentNode, documentsVisitor)
   );
 
-  // 1a. remove unused types
-  // 2a. remove unused interface fields
-  // 2b. re-add used interface fields to their implementing objects, even if the object field is not used directly
-  // 3a. remove unused object fields
-  // 3b. remove unused implemented interfaces
+  // 1. remove unused types
+  // 2. remove unused type references from unions
+  // 3a. remove unused interface fields
+  // 3b. re-add used interface fields to their implementing objects, even if the object field is not used directly
+  // 4a. remove unused object fields
+  // 4b. remove unused implemented interfaces
 
   const typeMap = schema.getTypeMap();
 
@@ -86,6 +88,19 @@ export const plugin: PluginFunction = (
   for (const typeName of Object.keys(typeMap)) {
     if (!(usedObjectFields.has(typeName) || otherUsedTypes.has(typeName))) {
       delete typeMap[typeName];
+    }
+  }
+
+  for (const type of Object.values(typeMap)) {
+    if (isUnionType(type)) {
+      const members = type.getTypes();
+      // mutate in-place with a reverse loop
+      for (let i = members.length - 1; i >= 0; i -= 1) {
+        const member = members[i];
+        if (typeMap[member.name] === undefined) {
+          members.splice(i, 1);
+        }
+      }
     }
   }
 

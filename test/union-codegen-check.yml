@@ -1,0 +1,7 @@
+schema: generated/union-subset-schema.graphql
+documents:
+  - union-document.graphql
+generates:
+  generated/union-subset-rewritten.json:
+    plugins:
+      - introspection
