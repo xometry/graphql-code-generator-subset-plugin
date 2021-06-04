@@ -1,15 +1,16 @@
 {
   "name": "@xometry/graphql-code-generator-subset-plugin",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A plugin for graphql-code-generator that will take a full schema and a set of operations, and produce a subset schema.",
   "main": "dist/src/plugin.js",
   "repository": "https://github.com/xometry/graphql-code-generator-subset-plugin",
   "author": "Benjamin Smedberg <bsmedberg@xometry.com>",
   "license": "MIT",
+  "peerDependencies": {
+    "graphql": "^15.0"
+  },
   "dependencies": {
-    "@graphql-codegen/cli": "^1.19.4",
-    "@graphql-codegen/plugin-helpers": "^1.18.2",
-    "graphql": "^15.4.0"
+    "@graphql-codegen/plugin-helpers": "^1.18"
   },
   "scripts": {
     "build": "tsc -p .",
@@ -20,6 +21,8 @@
     "test": "yarn build && yarn jest dist/test"
   },
   "devDependencies": {
+    "graphql": "^15.5",
+    "@graphql-codegen/cli": "^1.19",
     "@graphql-codegen/introspection": "^1.18.1",
     "@types/node": "^14.14.14",
     "@typescript-eslint/eslint-plugin": "^4.12.0",

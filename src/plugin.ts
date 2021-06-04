@@ -3,6 +3,7 @@ import {
   getNamedType,
   GraphQLSchema,
   GraphQLType,
+  GraphQLInputType,
   TypeInfo,
   visit,
   visitWithTypeInfo,
@@ -10,6 +11,7 @@ import {
   isObjectType,
   isInterfaceType,
   isUnionType,
+  GraphQLInputObjectType,
 } from "graphql";
 import { Types, PluginFunction } from "@graphql-codegen/plugin-helpers";
 
@@ -49,6 +51,25 @@ export const plugin: PluginFunction = (
     fieldMap.add(fieldName);
   }
 
+  function recursivelyVisitInputType(
+    type: GraphQLInputType | undefined | null
+  ) {
+    if (!type) {
+      return;
+    }
+
+    const resolvedType = getNamedType(type);
+    otherUsedTypes.add(resolvedType.name);
+
+    const kind = resolvedType.astNode?.kind;
+    if (kind === "InputObjectTypeDefinition") {
+      const inputType = resolvedType as GraphQLInputObjectType;
+      Object.values(inputType.getFields()).forEach((field) => {
+        recursivelyVisitInputType(field.type);
+      });
+    }
+  }
+
   const documentsVisitor = visitWithTypeInfo(typeInfo, {
     enter(node) {
       // Record any type referenced by the AST in any way
@@ -60,6 +81,12 @@ export const plugin: PluginFunction = (
         const parentTypeName = typeInfo.getParentType()?.name as string;
         const fieldName = node.name.value;
         visitField(parentTypeName, fieldName);
+      }
+
+      // For *variables*, we need to visit every possible input type contained within the variable and their fields.
+      if (node.kind === "VariableDefinition") {
+        const inputType = typeInfo.getInputType();
+        recursivelyVisitInputType(inputType);
       }
     },
   });
