@@ -29,7 +29,7 @@ export const plugin: PluginFunction = (
   const typeInfo = new TypeInfo(buildSchema(printSchema(schema)));
   const usedObjectFields = new Map<string, Set<string>>(); // objects and interfaces
   const otherUsedTypes = new Set<string>();
-  const alreadyProcessedTypes = new Set<string>();
+  const alreadyProcessedInputTypes = new Set<string>();
 
   function visitType(type: GraphQLType | undefined | null) {
     if (!type) {
@@ -66,10 +66,10 @@ export const plugin: PluginFunction = (
     const kind = resolvedType.astNode?.kind;
     if (
       kind === "InputObjectTypeDefinition" &&
-      !alreadyProcessedTypes.has(resolvedType.name)
+      !alreadyProcessedInputTypes.has(resolvedType.name)
     ) {
       const inputType = resolvedType as GraphQLInputObjectType;
-      alreadyProcessedTypes.add(inputType.name);
+      alreadyProcessedInputTypes.add(inputType.name);
       Object.values(inputType.getFields()).forEach((field) => {
         recursivelyVisitInputType(field.type);
       });
