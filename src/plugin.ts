@@ -12,6 +12,7 @@ import {
   isInterfaceType,
   isUnionType,
   GraphQLInputObjectType,
+  buildSchema,
 } from "graphql";
 import { Types, PluginFunction } from "@graphql-codegen/plugin-helpers";
 
@@ -25,9 +26,10 @@ export const plugin: PluginFunction = (
     );
   }
 
-  const typeInfo = new TypeInfo(schema);
+  const typeInfo = new TypeInfo(buildSchema(printSchema(schema)));
   const usedObjectFields = new Map<string, Set<string>>(); // objects and interfaces
   const otherUsedTypes = new Set<string>();
+  const alreadyProcessedInputTypes = new Set<string>();
 
   function visitType(type: GraphQLType | undefined | null) {
     if (!type) {
@@ -62,8 +64,12 @@ export const plugin: PluginFunction = (
     otherUsedTypes.add(resolvedType.name);
 
     const kind = resolvedType.astNode?.kind;
-    if (kind === "InputObjectTypeDefinition") {
+    if (
+      kind === "InputObjectTypeDefinition" &&
+      !alreadyProcessedInputTypes.has(resolvedType.name)
+    ) {
       const inputType = resolvedType as GraphQLInputObjectType;
+      alreadyProcessedInputTypes.add(inputType.name);
       Object.values(inputType.getFields()).forEach((field) => {
         recursivelyVisitInputType(field.type);
       });
